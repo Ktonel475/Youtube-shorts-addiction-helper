@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Shorts Addiction Helper
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.0.1
 // @description  Monitors and displays the count of YouTube shorts watched, providing visual cues to encourage moderation. Allows resetting the count for a fresh start.
 // @author       ktonel475
 // @match        https://www.youtube.com/*
@@ -20,7 +20,7 @@
         // Check if one calendar day has passed since the last update
         if (currentDate !== lastUpdateDate) {
             // Reset count and update the date
-            GM_setValue('shortsWatchedCount', 1);
+            GM_setValue('shortsWatchedCount', 0);
             GM_setValue('lastUpdateDate', currentDate);
         } else {
             if(window.location.href.includes('/shorts')){
