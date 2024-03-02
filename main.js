@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         YouTube Shorts Addiction Helper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
-// @description  Monitors and displays the count of YouTube shorts watched, providing visual cues to encourage moderation. Allows resetting the count for a fresh start.
+// @version      1.1
+// @description  Monitors and displays the count of YouTube shorts watched, providing visual cues to encourage moderation. Allows watch one video without blocking element
 // @author       ktonel475
 // @match        https://www.youtube.com/*
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @downloadURL https://update.greasyfork.org/scripts/486350/YouTube%20Shorts%20Addiction%20Helper.user.js
+// @updateURL https://update.greasyfork.org/scripts/486350/YouTube%20Shorts%20Addiction%20Helper.meta.js
 // ==/UserScript==
 
 (function () {
@@ -156,25 +158,6 @@
         }
     }
 
-    function addResetButton() {
-        const resetButton = document.createElement('button');
-        resetButton.id = 'reset-counter-button';
-        resetButton.textContent = 'Reset Counter';
-        resetButton.style.position = 'fixed';
-        resetButton.style.top = '60px'; // Adjust the position as needed
-        resetButton.style.right = '10px';
-        resetButton.style.padding = '10px';
-        resetButton.style.fontSize = '14px';
-
-        // Event listener to reset the counter when the button is clicked
-        resetButton.addEventListener('click', function () {
-            GM_setValue('shortsWatchedCount', 0);
-            displayCountBasedOnURL(); // Update the display after resetting
-        });
-
-        document.body.appendChild(resetButton);
-    }
-
     function removeElementById(elementId) {
         var targetElement = document.getElementById(elementId);
 
@@ -184,6 +167,23 @@
         } else {
             console.log('Element with ID ' + elementId + ' not found.');
         }
+    }
+    function addResetButton() {
+        const resetButton = document.createElement('button');
+        resetButton.id = 'reset-counter-button';
+        resetButton.textContent = 'Watch this one only';
+        resetButton.style.position = 'fixed';
+        resetButton.style.top = '60px'; // Adjust the position as needed
+        resetButton.style.right = '10px';
+        resetButton.style.padding = '10px';
+        resetButton.style.fontSize = '14px';
+
+        // Event listener to reset the counter when the button is clicked
+        resetButton.addEventListener('click', function () {
+            removeElementById('shorts-watch-rectangle'); // Update the display after resetting
+        });
+
+        document.body.appendChild(resetButton);
     }
 
     addResetButton();
