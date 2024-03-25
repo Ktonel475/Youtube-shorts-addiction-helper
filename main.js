@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Shorts Addiction Helper
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.1.1
 // @description  Monitors and displays the count of YouTube shorts watched, providing visual cues to encourage moderation. Allows watch one video without blocking element
 // @author       ktonel475
 // @match        https://www.youtube.com/*
@@ -168,9 +168,9 @@
             console.log('Element with ID ' + elementId + ' not found.');
         }
     }
-    function addResetButton() {
+    function RemoveElementButton() {
         const resetButton = document.createElement('button');
-        resetButton.id = 'reset-counter-button';
+        resetButton.id = 'watch-this-only-button';
         resetButton.textContent = 'Watch this one only';
         resetButton.style.position = 'fixed';
         resetButton.style.top = '60px'; // Adjust the position as needed
@@ -186,10 +186,29 @@
         document.body.appendChild(resetButton);
     }
 
-    addResetButton();
+     RemoveElementButton();
     // Display count near the video display initially
     displayCountBasedOnURL();
+    function removeElementOnFullScreen() {
+        var elementToRemove = document.getElementById('shorts-watch-count-display');
+        if (elementToRemove) {
+            elementToRemove.remove();
+        }
+        var elementToRemove1 = document.getElementById('watch-this-only-button');
+        if (elementToRemove1) {
+            elementToRemove1.remove();
+        }
+    }
 
+// Event listener for fullscreenchange event
+    document.addEventListener('fullscreenchange', function () {
+        if (document.fullscreenElement) {
+            removeElementOnFullScreen();
+        } else {
+            displayCountBasedOnURL();
+            RemoveElementButton();
+        }
+    });
     // Event listener for video end and URL change
     document.addEventListener('yt-navigate-finish', function () {
         // Update the count whenever a video finishes playing or URL changes
